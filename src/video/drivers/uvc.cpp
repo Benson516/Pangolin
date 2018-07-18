@@ -43,7 +43,7 @@ UvcVideo::UvcVideo(int vendor_id, int product_id, const char* sn, int device_id,
     if(!ctx_) {
         throw VideoException("Unable to open UVC Context");
     }
-    
+
     InitDevice(vendor_id, product_id, sn, device_id, width, height, fps);
     InitPangoDeviceProperties();
 
@@ -132,7 +132,7 @@ void UvcVideo::InitDevice(int vid, int pid, const char* sn, int device_id, int w
     if(!dev_) {
         throw VideoException("Unable to open UVC Device - no pointer returned.");
     }
-    
+
     uvc_error_t open_err = uvc_open(dev_, &devh_);
     if (open_err != UVC_SUCCESS) {
         uvc_perror(open_err, "uvc_open");
@@ -141,7 +141,7 @@ void UvcVideo::InitDevice(int vid, int pid, const char* sn, int device_id, int w
     }
 
     //uvc_print_diag(devh_, stderr);
-    
+
     uvc_error_t mode_err = uvc_get_stream_ctrl_format_size(
                 devh_, &ctrl_,
                 UVC_FRAME_FORMAT_ANY,
@@ -149,7 +149,7 @@ void UvcVideo::InitDevice(int vid, int pid, const char* sn, int device_id, int w
                 fps);
 
     //uvc_print_stream_ctrl(&ctrl_, stderr);
-            
+
     if (mode_err != UVC_SUCCESS) {
         uvc_perror(mode_err, "uvc_get_stream_ctrl_format_size");
         uvc_close(devh_);
@@ -168,6 +168,7 @@ void UvcVideo::InitDevice(int vid, int pid, const char* sn, int device_id, int w
     // Default to greyscale.
     PixelFormat pfmt = PixelFormatFromString("GRAY8");
 
+    /*
     const uvc_format_desc_t* uvc_fmt = uvc_get_format_descs(devh_);
     while( uvc_fmt->bFormatIndex != ctrl_.bFormatIndex && uvc_fmt ) {
         uvc_fmt = uvc_fmt->next;
@@ -179,7 +180,8 @@ void UvcVideo::InitDevice(int vid, int pid, const char* sn, int device_id, int w
             pfmt = PixelFormatFromString("GRAY16LE");
         }
     }
-    
+    */
+
     const StreamInfo stream_info(pfmt, width, height, (width*pfmt.bpp)/8, 0);
     streams.push_back(stream_info);
 }
@@ -195,7 +197,7 @@ void UvcVideo::InitPangoDeviceProperties()
 void UvcVideo::DeinitDevice()
 {
     Stop();
-    
+
     if (frame_) {
         uvc_free_frame(frame_);
         frame_ = 0;
@@ -250,7 +252,7 @@ bool UvcVideo::GrabNext( unsigned char* image, bool wait )
 {
     uvc_frame_t* frame = NULL;
     uvc_error_t err = uvc_stream_get_frame(strm_, &frame, wait ? 0 : -1);
-    
+
     if(err!= UVC_SUCCESS) {
         pango_print_error("UvcVideo Error: %s", uvc_strerror(err) );
         return false;

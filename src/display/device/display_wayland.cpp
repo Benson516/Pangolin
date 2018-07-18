@@ -582,13 +582,13 @@ static void pointer_handle_axis(void *data, struct wl_pointer */*wl_pointer*/, u
     }
 }
 
-//static void pointer_handle_frame(void */*data*/, struct wl_pointer */*wl_pointer*/) { }
+static void pointer_handle_frame(void */*data*/, struct wl_pointer */*wl_pointer*/) { }
 
-//static void pointer_handle_axis_source(void */*data*/, struct wl_pointer */*wl_pointer*/, uint32_t /*axis_source*/) { }
+static void pointer_handle_axis_source(void */*data*/, struct wl_pointer */*wl_pointer*/, uint32_t /*axis_source*/) { }
 
-//static void pointer_handle_axis_stop(void */*data*/, struct wl_pointer */*wl_pointer*/, uint32_t /*time*/, uint32_t /*axis*/) { }
+static void pointer_handle_axis_stop(void */*data*/, struct wl_pointer */*wl_pointer*/, uint32_t /*time*/, uint32_t /*axis*/) { }
 
-//static void pointer_handle_axis_discrete(void */*data*/, struct wl_pointer */*wl_pointer*/, uint32_t /*axis*/, int32_t /*discrete*/) { }
+static void pointer_handle_axis_discrete(void */*data*/, struct wl_pointer */*wl_pointer*/, uint32_t /*axis*/, int32_t /*discrete*/) { }
 
 static const struct wl_pointer_listener pointer_listener = {
     pointer_handle_enter,
@@ -912,4 +912,3 @@ PANGOLIN_REGISTER_FACTORY(WaylandWindow)
 }
 
 } // namespace pangolin
-
